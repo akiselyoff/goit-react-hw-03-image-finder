@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import ImageGallery from './ImageGallery';
 
 const KEY = '26823171-490067530a76e346906bfc05d';
 
 export default class App extends Component {
   state = {
-    gallery: null,
+    gallery: [],
     page: 1,
   };
   componentDidMount() {
@@ -14,15 +15,13 @@ export default class App extends Component {
       .then(res => res.json())
       .then(gallery => this.setState({ gallery: gallery.hits }));
   }
+  componentDidUpdate() {
+    console.log(this.state.gallery);
+  }
   render() {
     return (
       <>
-        {this.state.gallery &&
-          this.state.gallery.map(galleryItem => (
-            <li key={galleryItem.id} className="gallery-item">
-              <img src={galleryItem.webformatURL} alt="webformatURL" />
-            </li>
-          ))}
+        <ImageGallery gallery={this.state.gallery} />
       </>
     );
   }
