@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { TailSpin } from 'react-loader-spinner';
+import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 
 const KEY = '26823171-490067530a76e346906bfc05d';
@@ -8,6 +9,7 @@ const KEY = '26823171-490067530a76e346906bfc05d';
 export default class App extends Component {
   state = {
     gallery: [],
+    query: '',
     page: 1,
     loading: false,
   };
@@ -23,14 +25,18 @@ export default class App extends Component {
   componentDidUpdate() {
     console.log(this.state.gallery);
   }
+  handleFormSubmit = query => {
+    this.setState({ query });
+  };
   render() {
     return (
-      <>
+      <div>
+        <Searchbar onSubmit={this.handleFormSubmit} />
         {this.state.loading && (
           <TailSpin color="#00BFFF" height={80} width={80} />
         )}
         <ImageGallery gallery={this.state.gallery} />
-      </>
+      </div>
     );
   }
 }
