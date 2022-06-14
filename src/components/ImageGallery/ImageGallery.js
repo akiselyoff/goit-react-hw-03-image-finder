@@ -30,12 +30,12 @@ class ImageGallery extends Component {
 
       fetchGallery
         .fetchAPI(nextQuery, nextPage)
-        .then(gallery =>
+        .then(gallery => {
           this.setState({
             gallery: gallery.hits,
             status: 'resolved',
-          })
-        )
+          });
+        })
         .catch(error => this.setState({ error, status: 'rejected' }));
     }
 
@@ -90,7 +90,16 @@ class ImageGallery extends Component {
     //   return <h1>Enter your query</h1>;
     // }
     if (status === 'pending') {
-      return <TailSpin color="#00BFFF" height={80} width={80} />;
+      return (
+        <div className={s.TailSpin}>
+          <TailSpin
+            ariaLabel="loading"
+            color="#00BFFF"
+            height={80}
+            width={80}
+          />
+        </div>
+      );
     }
     if (status === 'rejected') {
       return <ImageGalleryError message={error.message} />;

@@ -24,6 +24,7 @@ class Modal extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('click', this.handleClick);
   }
+
   render() {
     const { imgModal } = this.props;
     return (
