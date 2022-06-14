@@ -6,6 +6,7 @@ import fetchGallery from '../fetchAPI';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import ImageGalleryError from './ImageGalleryError';
 import Button from '../Button/Button';
+import Modal from '../Modal/Modal';
 import s from './ImageGallery.module.css';
 
 class ImageGallery extends Component {
@@ -15,6 +16,7 @@ class ImageGallery extends Component {
     page: 1,
     error: null,
     status: 'idle',
+    isModalOpen: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -24,7 +26,7 @@ class ImageGallery extends Component {
     const nextPage = this.state.page;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ status: 'pending', page: 1, gallery: null });
+      this.setState({ status: 'pending', page: 1 });
 
       fetchGallery
         .fetchAPI(nextQuery, nextPage)
@@ -58,15 +60,29 @@ class ImageGallery extends Component {
   }
 
   handleLoadMore = () => {
-    console.log('load more');
-
     this.setState(({ page }) => {
       return { page: page + 1 };
     });
   };
 
+  onImageClick = evt => {
+    console.log(evt);
+    if (evt.target.nodeName === 'IMG') {
+      this.setState({
+        link: evt.target.attributes.data.nodeValue,
+        isModalOpen: true,
+      });
+    }
+  };
+
+  closeModal = () => {
+    this.setState({
+      isModalOpen: false,
+    });
+  };
+
   render() {
-    const { gallery, error, status } = this.state;
+    const { gallery, error, status, isModalOpen } = this.state;
 
     if (status === 'idle') {
       return <h1>Enter your query</h1>;
@@ -81,6 +97,9 @@ class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <>
+          {isModalOpen && (
+            <Modal imgModal={this.state.link} closeModal={this.closeModal} />
+          )}
           <ul className={s.ImageGallery}>
             {gallery.map(galleryItem => {
               return (
@@ -91,7 +110,8 @@ class ImageGallery extends Component {
               );
             })}
           </ul>
-          <Button onClick={this.handleLoadMore} />
+
+          {gallery.length > 0 && <Button onClick={this.handleLoadMore} />}
         </>
       );
     }
