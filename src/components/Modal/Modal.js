@@ -29,14 +29,14 @@ class Modal extends Component {
     return (
       <div className={s.Overlay}>
         <div className={s.Modal}>
-          <img src={imgModal} alt="" />
+          <img src={imgModal.largeImageURL} alt="" />
         </div>
       </div>
     );
   }
 }
 Modal.propTypes = {
-  imgModal: PropTypes.string.isRequired,
+  imgModal: PropTypes.object.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 

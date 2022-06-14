@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { TailSpin } from 'react-loader-spinner';
 import fetchGallery from '../fetchAPI';
@@ -73,9 +73,8 @@ class ImageGallery extends Component {
         const itemId = Number(item.id);
 
         if (itemId === imgId) {
-          console.log(item.largeImageURL);
           this.setState({
-            largeImageURL: item.largeImageURL,
+            dataModalImg: item,
             isModalOpen: true,
           });
         }
@@ -107,7 +106,7 @@ class ImageGallery extends Component {
         <>
           {isModalOpen && (
             <Modal
-              imgModal={this.state.largeImageURL}
+              imgModal={this.state.dataModalImg}
               closeModal={this.closeModal}
             />
           )}
@@ -129,5 +128,9 @@ class ImageGallery extends Component {
     }
   }
 }
+
+ImageGallery.propTypes = {
+  query: PropTypes.string,
+};
 
 export default ImageGallery;
