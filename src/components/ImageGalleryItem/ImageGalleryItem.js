@@ -1,12 +1,13 @@
 import s from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ galleryItem }) => {
+const ImageGalleryItem = ({ galleryItem, onImageClick }) => {
   return (
-    <li className={s.GalleryItem}>
+    <li onClick={onImageClick} className={s.GalleryItem}>
       <img
         className={s.ImageGalleryItem}
+        id={galleryItem.id}
         src={galleryItem.webformatURL}
-        alt={galleryItem.webformatURL}
+        alt={galleryItem.tags}
       />
     </li>
   );

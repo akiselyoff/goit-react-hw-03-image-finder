@@ -67,12 +67,13 @@ class ImageGallery extends Component {
 
   onImageClick = evt => {
     console.log(evt);
-    if (evt.target.nodeName === 'IMG') {
-      this.setState({
-        link: evt.target.attributes.data.nodeValue,
-        isModalOpen: true,
-      });
-    }
+
+    // if (evt.target.nodeName === 'IMG') {
+    //   this.setState({
+    //     link: evt.target.attributes.data.nodeValue,
+    //     isModalOpen: true,
+    //   });
+    // }
   };
 
   closeModal = () => {
@@ -104,6 +105,7 @@ class ImageGallery extends Component {
             {gallery.map(galleryItem => {
               return (
                 <ImageGalleryItem
+                  onImageClick={this.onImageClick}
                   key={galleryItem.id}
                   galleryItem={galleryItem}
                 />
