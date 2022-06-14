@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BiSearchAlt2 } from 'react-icons/bi';
+import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = { query: '' };
@@ -23,16 +24,14 @@ class Searchbar extends Component {
   render() {
     const { query } = this.state;
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.handleSubmit}>
-          <button type="submit" className="button">
-            <span className="button-label">
-              <BiSearchAlt2 />
-            </span>
+      <header className={s.Searchbar}>
+        <form className={s.SearchForm} onSubmit={this.handleSubmit}>
+          <button type="submit" className={s.SearchFormButton}>
+            <BiSearchAlt2 style={{ margin: '7px auto' }} />
           </button>
 
           <input
-            className="input"
+            className={s.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus

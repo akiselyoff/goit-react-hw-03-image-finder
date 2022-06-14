@@ -41,15 +41,10 @@ class ImageGallery extends Component {
 
     if (prevPage !== nextPage && prevQuery === nextQuery) {
       this.setState({ status: 'pending' });
-      console.log(prevQuery);
-      console.log(nextQuery);
-      console.log(prevQuery === nextQuery);
 
       fetchGallery
         .fetchAPI(nextQuery, nextPage)
         .then(gallery => {
-          console.log(prevState.gallery);
-          console.log(gallery);
           this.setState({
             gallery: [...prevState.gallery, ...gallery.hits],
             status: 'resolved',
@@ -91,9 +86,9 @@ class ImageGallery extends Component {
   render() {
     const { gallery, error, status, isModalOpen } = this.state;
 
-    if (status === 'idle') {
-      return <h1>Enter your query</h1>;
-    }
+    // if (status === 'idle') {
+    //   return <h1>Enter your query</h1>;
+    // }
     if (status === 'pending') {
       return <TailSpin color="#00BFFF" height={80} width={80} />;
     }

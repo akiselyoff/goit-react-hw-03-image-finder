@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import Searchbar from './Searchbar';
+import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 
 export default class App extends Component {
