@@ -66,14 +66,21 @@ class ImageGallery extends Component {
   };
 
   onImageClick = evt => {
-    console.log(evt);
+    if (evt.target.nodeName === 'IMG') {
+      const imgId = Number(evt.target.attributes.id.value);
 
-    // if (evt.target.nodeName === 'IMG') {
-    //   this.setState({
-    //     link: evt.target.attributes.data.nodeValue,
-    //     isModalOpen: true,
-    //   });
-    // }
+      this.state.gallery.forEach(item => {
+        const itemId = Number(item.id);
+
+        if (itemId === imgId) {
+          console.log(item.largeImageURL);
+          this.setState({
+            largeImageURL: item.largeImageURL,
+            isModalOpen: true,
+          });
+        }
+      });
+    }
   };
 
   closeModal = () => {
@@ -99,7 +106,10 @@ class ImageGallery extends Component {
       return (
         <>
           {isModalOpen && (
-            <Modal imgModal={this.state.link} closeModal={this.closeModal} />
+            <Modal
+              imgModal={this.state.largeImageURL}
+              closeModal={this.closeModal}
+            />
           )}
           <ul className={s.ImageGallery}>
             {gallery.map(galleryItem => {
