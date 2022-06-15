@@ -30,7 +30,7 @@ class Modal extends Component {
     return (
       <div className={s.Overlay}>
         <div className={s.Modal}>
-          <img src={imgModal.largeImageURL} alt="" />
+          <img src={imgModal.largeImageURL} alt={imgModal.tags} />
         </div>
       </div>
     );
