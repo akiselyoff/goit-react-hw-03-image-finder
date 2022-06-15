@@ -15,7 +15,11 @@ const ImageGalleryItem = ({ galleryItem, onImageClick }) => {
 };
 
 ImageGalleryItem.propTypes = {
-  galleryItem: PropTypes.object.isRequired,
+  galleryItem: PropTypes.shape({
+    id: PropTypes.number,
+    src: PropTypes.string,
+    alt: PropTypes.string,
+  }),
   onImageClick: PropTypes.func.isRequired,
 };
 

@@ -5,7 +5,7 @@ import s from './ImageGallery.module.css';
 
 class ImageGallery extends Component {
   state = {
-    gallery: [],
+    gallery: this.props.gallery,
   };
 
   render() {
@@ -16,7 +16,7 @@ class ImageGallery extends Component {
         {gallery.map(galleryItem => {
           return (
             <ImageGalleryItem
-              onImageClick={this.onImageClick}
+              onImageClick={this.props.onImageClick}
               key={galleryItem.id}
               galleryItem={galleryItem}
             />

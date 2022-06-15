@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import { TailSpin } from 'react-loader-spinner';
+import { PureComponent } from 'react';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Searchbar from './Searchbar/Searchbar';
 import fetchGallery from './fetchAPI';
@@ -7,8 +6,9 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import ImageGalleryError from './ImageGallery/ImageGalleryError';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
+import LoaderSpinner from './LoaderSpinner/LoaderSpinner';
 
-export default class App extends Component {
+export default class App extends PureComponent {
   state = {
     gallery: [],
     query: '',
@@ -19,12 +19,30 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevProps.query;
-    const nextQuery = this.props.query;
+    const prevQuery = prevState.query;
+    const nextQuery = this.state.query;
+    console.log('prevQuery: ' + prevQuery);
+    console.log('nextQuery: ' + nextQuery);
+    console.log(prevQuery === nextQuery);
+
     const prevPage = prevState.page;
     const nextPage = this.state.page;
 
-    if (prevPage !== nextPage || prevQuery === nextQuery) {
+    if (prevQuery !== nextQuery) {
+      this.setState({ status: 'pending', gallery: [], page: 1 });
+
+      fetchGallery
+        .fetchAPI(nextQuery, nextPage)
+        .then(gallery => {
+          this.setState({
+            gallery: gallery.hits,
+            status: 'resolved',
+          });
+        })
+        .catch(error => this.setState({ error, status: 'rejected' }));
+    }
+
+    if (prevPage !== nextPage && nextPage !== 1) {
       this.setState({ status: 'pending' });
 
       fetchGallery
@@ -64,6 +82,7 @@ export default class App extends Component {
         }
       });
     }
+    console.log(this.state.dataModalImg);
   };
 
   closeModal = () => {
@@ -73,22 +92,19 @@ export default class App extends Component {
   };
 
   render() {
-    const { gallery, query, error, status, isModalOpen } = this.state;
+    const { gallery, error, status, isModalOpen } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === 'idle' && <h1>Enter your query</h1>}
-        {status === 'pending' && (
-          <TailSpin
-            ariaLabel="loading"
-            color="#00BFFF"
-            height={80}
-            width={80}
-          />
+        {status === 'pending' && <LoaderSpinner />}
+        {status === 'resolved' && (
+          <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
         )}
-        {status === 'resolved' && <ImageGallery query={query} />}
         {status === 'rejected' && <ImageGalleryError message={error.message} />}
-        {gallery.length > 0 && <Button onClick={this.handleLoadMore} />}
+        {status === 'resolved' && gallery.length > 0 && (
+          <Button onClick={this.handleLoadMore} />
+        )}
         {isModalOpen && (
           <Modal
             imgModal={this.state.dataModalImg}
