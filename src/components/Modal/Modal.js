@@ -36,8 +36,13 @@ class Modal extends Component {
     );
   }
 }
+
 Modal.propTypes = {
-  imgModal: PropTypes.object.isRequired,
+  imgModal: PropTypes.shape({
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }),
+
   closeModal: PropTypes.func.isRequired,
 };
 

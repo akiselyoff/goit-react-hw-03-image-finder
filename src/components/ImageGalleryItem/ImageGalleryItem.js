@@ -16,9 +16,9 @@ const ImageGalleryItem = ({ galleryItem, onImageClick }) => {
 
 ImageGalleryItem.propTypes = {
   galleryItem: PropTypes.shape({
-    id: PropTypes.number,
-    src: PropTypes.string,
-    alt: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
   }),
   onImageClick: PropTypes.func.isRequired,
 };

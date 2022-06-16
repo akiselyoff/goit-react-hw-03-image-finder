@@ -106,9 +106,14 @@ export default class App extends PureComponent {
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === 'idle' && <h1>Enter your query</h1>}
         {status === 'pending' && <LoaderSpinner />}
+        {/* {status === 'pending' && gallery.length > 0 && (
+          <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
+        )} */}
+
         {status === 'resolved' && (
           <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
         )}
+
         {status === 'rejected' && <ImageGalleryError message={error.message} />}
         {status === 'resolved' &&
           gallery.length > 0 &&
