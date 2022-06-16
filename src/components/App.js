@@ -16,6 +16,7 @@ export default class App extends PureComponent {
     error: null,
     status: 'idle',
     isModalOpen: false,
+    total: 0,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,6 +37,7 @@ export default class App extends PureComponent {
         .then(gallery => {
           this.setState({
             gallery: gallery.hits,
+            total: gallery.total,
             status: 'resolved',
           });
         })
@@ -50,11 +52,17 @@ export default class App extends PureComponent {
         .then(gallery => {
           this.setState({
             gallery: [...prevState.gallery, ...gallery.hits],
+            total: gallery.total,
             status: 'resolved',
           });
         })
         .catch(error => this.setState({ error, status: 'rejected' }));
     }
+
+    window.scrollBy({
+      top: document.body.clientHeight,
+      behavior: 'smooth',
+    });
   }
 
   handleFormSubmit = query => {
@@ -92,7 +100,7 @@ export default class App extends PureComponent {
   };
 
   render() {
-    const { gallery, error, status, isModalOpen } = this.state;
+    const { gallery, error, status, isModalOpen, total } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -102,9 +110,9 @@ export default class App extends PureComponent {
           <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
         )}
         {status === 'rejected' && <ImageGalleryError message={error.message} />}
-        {status === 'resolved' && gallery.length > 0 && (
-          <Button onClick={this.handleLoadMore} />
-        )}
+        {status === 'resolved' &&
+          gallery.length > 0 &&
+          gallery.length < total && <Button onClick={this.handleLoadMore} />}
         {isModalOpen && (
           <Modal
             imgModal={this.state.dataModalImg}
