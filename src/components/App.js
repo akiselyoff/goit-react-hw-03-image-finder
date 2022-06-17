@@ -19,29 +19,15 @@ export default class App extends PureComponent {
     total: 0,
   };
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const prevQuery = this.state.query;
-  //   const nextQuery = nextState.query;
-  //   const prevPage = this.state.page;
-  //   const nextPage = nextState.page;
-  //   if (prevQuery === nextQuery && prevPage === nextPage) {
-  //     return false;
-  //   }
-  // }
-
   componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevState.query;
     const nextQuery = this.state.query;
-    console.log('prevQuery: ' + prevQuery);
-    console.log('nextQuery: ' + nextQuery);
-    console.log(prevQuery === nextQuery);
+    // console.log('prevQuery: ' + prevQuery);
+    // console.log('nextQuery: ' + nextQuery);
+    // console.log(prevQuery === nextQuery);
 
     const prevPage = prevState.page;
     const nextPage = this.state.page;
-
-    // if (prevPage === nextPage && prevQuery === nextQuery) {
-    //   return;
-    // }
 
     if (prevQuery !== nextQuery || (prevPage !== nextPage && nextPage !== 1)) {
       this.setState({ status: 'pending' });
@@ -49,11 +35,11 @@ export default class App extends PureComponent {
       fetchGallery
         .fetchAPI(nextQuery, nextPage)
         .then(gallery => {
-          this.setState({
-            gallery: [...prevState.gallery, ...gallery.hits],
+          this.setState(prev => ({
+            gallery: [...prev.gallery, ...gallery.hits],
             total: gallery.total,
             status: 'resolved',
-          });
+          }));
         })
         .catch(error => this.setState({ error, status: 'rejected' }));
     }
