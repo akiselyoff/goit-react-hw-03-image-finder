@@ -19,6 +19,16 @@ export default class App extends PureComponent {
     total: 0,
   };
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const prevQuery = this.state.query;
+  //   const nextQuery = nextState.query;
+  //   const prevPage = this.state.page;
+  //   const nextPage = nextState.page;
+  //   if (prevQuery === nextQuery && prevPage === nextPage) {
+  //     return false;
+  //   }
+  // }
+
   componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevState.query;
     const nextQuery = this.state.query;
@@ -29,22 +39,11 @@ export default class App extends PureComponent {
     const prevPage = prevState.page;
     const nextPage = this.state.page;
 
-    if (prevQuery !== nextQuery) {
-      this.setState({ status: 'pending', gallery: [], page: 1 });
+    // if (prevPage === nextPage && prevQuery === nextQuery) {
+    //   return;
+    // }
 
-      fetchGallery
-        .fetchAPI(nextQuery, nextPage)
-        .then(gallery => {
-          this.setState({
-            gallery: gallery.hits,
-            total: gallery.total,
-            status: 'resolved',
-          });
-        })
-        .catch(error => this.setState({ error, status: 'rejected' }));
-    }
-
-    if (prevPage !== nextPage && nextPage !== 1) {
+    if (prevQuery !== nextQuery || (prevPage !== nextPage && nextPage !== 1)) {
       this.setState({ status: 'pending' });
 
       fetchGallery
@@ -66,7 +65,7 @@ export default class App extends PureComponent {
   }
 
   handleFormSubmit = query => {
-    this.setState({ query });
+    this.setState({ query, gallery: [], page: 1 });
   };
 
   handleLoadMore = () => {
