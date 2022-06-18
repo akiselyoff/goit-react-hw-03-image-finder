@@ -28,6 +28,10 @@ export default class App extends PureComponent {
 
     const prevPage = prevState.page;
     const nextPage = this.state.page;
+    if (prevQuery === nextQuery && prevPage === nextPage) {
+      alert('!!!');
+      return;
+    }
 
     if (prevQuery !== nextQuery || (prevPage !== nextPage && nextPage !== 1)) {
       this.setState({ status: 'pending' });
