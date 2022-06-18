@@ -22,16 +22,9 @@ export default class App extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevState.query;
     const nextQuery = this.state.query;
-    // console.log('prevQuery: ' + prevQuery);
-    // console.log('nextQuery: ' + nextQuery);
-    // console.log(prevQuery === nextQuery);
 
     const prevPage = prevState.page;
     const nextPage = this.state.page;
-    if (prevQuery === nextQuery && prevPage === nextPage) {
-      alert('!!!');
-      return;
-    }
 
     if (prevQuery !== nextQuery || (prevPage !== nextPage && nextPage !== 1)) {
       this.setState({ status: 'pending' });
@@ -55,7 +48,9 @@ export default class App extends PureComponent {
   }
 
   handleFormSubmit = query => {
-    this.setState({ query, gallery: [], page: 1 });
+    if (query !== this.state.query) {
+      this.setState({ query, gallery: [], page: 1 });
+    }
   };
 
   handleLoadMore = () => {
@@ -95,9 +90,6 @@ export default class App extends PureComponent {
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === 'idle' && <h1>Enter your query</h1>}
         {status === 'pending' && <LoaderSpinner />}
-        {/* {status === 'pending' && gallery.length > 0 && (
-          <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
-        )} */}
 
         {status === 'resolved' && (
           <ImageGallery gallery={gallery} onImageClick={this.onImageClick} />
